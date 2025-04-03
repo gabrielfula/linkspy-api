@@ -7,12 +7,13 @@ export class CreateLocationService {
           this.locationRepository = new LocationRepository();
      }
  
-     public async save(longitude: string, latitude: string, state: string, city: string, linkId: number): Promise<any> {
+     public async save(longitude: string, latitude: string, state: string, city: string, linkId: number, ipAddress: any): Promise<any> {
           const dataToCreate = {
                longitude: longitude,
                latitude: latitude,
                city: city,
                state: state,
+               ip_address: ipAddress,
                link_id: linkId // TODO: criar esse campo referente ao link_id, onde aquela localizaçao refere-se ao location
           };
 

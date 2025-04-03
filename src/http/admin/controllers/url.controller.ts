@@ -6,7 +6,9 @@ import { CreateLinkService } from "../../../services/link/create-link.service";
 
 export async function track(req: Request, res: Response) {
 
-     const url = await new FetchLinkService().track(req.params.track_code, req.body);
+     const userIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+     const url = await new FetchLinkService().track(req.params.track_code, req.body, userIp);
 
      res.json({ 
           "sucess": true,
