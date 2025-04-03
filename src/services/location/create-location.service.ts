@@ -1,22 +1,23 @@
-import { LinkRepository } from "../../repositories/link.repository";
+import { LocationRepository } from "../../repositories/location.repository";
 
 export class CreateLocationService {
-     private linkRepository: LinkRepository;
+     private locationRepository: LocationRepository;
 
      constructor() {
-          this.linkRepository = new LinkRepository();
+          this.locationRepository = new LocationRepository();
      }
  
-     private async save(newUrl: string, oldUrl: string, track: string, userId: number): Promise<any> {
+     public async save(longitude: string, latitude: string, state: string, city: string, linkId: number): Promise<any> {
           const dataToCreate = {
-               user_id: userId,
-               new_link: newUrl,
-               original_link: oldUrl,
-               track_code: track
+               longitude: longitude,
+               latitude: latitude,
+               city: city,
+               state: state,
+               link_id: linkId // TODO: criar esse campo referente ao link_id, onde aquela localizaçao refere-se ao location
           };
 
           try {
-               return await this.linkRepository.insert(dataToCreate);
+               return await this.locationRepository.insert(dataToCreate);
                
           } catch (error) {
                console.log('errorrr', error);

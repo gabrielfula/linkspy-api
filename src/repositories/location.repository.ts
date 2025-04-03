@@ -9,12 +9,4 @@ export class LocationRepository {
                data,
           });
      }
-
-     // async findByTrackCode(trackCode: string): Promise<Location | null> {
-     //      return await prisma.link.findUnique({
-     //           where: {
-     //                track_code: trackCode
-     //           }
-     //      });
-     // }
 }
