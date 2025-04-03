@@ -1,5 +1,4 @@
-import { Link } from "@prisma/client";
-import { LinkRepository } from "../repositories/link.repository";
+import { LinkRepository } from "../../repositories/link.repository";
 
 export class CreateLinkService {
      private linkRepository: LinkRepository;
@@ -11,7 +10,7 @@ export class CreateLinkService {
      async index(data: any): Promise<any> {
          const urlData = await this.generateUrl(data.old_url);
 
-         /* TODO: ajuster UserId Fixo a principio */ 
+         // TODO: ajuster UserId Fixo a principio
          const userId = 1;
 
          const linkCreated = await this.save(urlData.subdomainUrl, data.old_url, urlData.trackCode, userId);
@@ -59,7 +58,7 @@ export class CreateLinkService {
                user_id: userId,
                new_link: newUrl,
                original_link: oldUrl,
-               track: track
+               track_code: track
           };
 
           try {

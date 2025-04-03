@@ -9,4 +9,12 @@ export class LinkRepository {
                data,
           });
      }
+
+     async findByTrackCode(trackCode: string): Promise<Link | null> {
+          return await prisma.link.findUnique({
+               where: {
+                    track_code: trackCode
+               }
+          });
+     }
 }

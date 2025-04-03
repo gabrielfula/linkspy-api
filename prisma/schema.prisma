@@ -30,7 +30,7 @@ model Link {
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
   deleted_at    DateTime?
-  track         String
+  track_code    String    @unique
   user          User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id], map: "links_user_id_fkey")

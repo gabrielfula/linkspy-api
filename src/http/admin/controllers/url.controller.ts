@@ -1,20 +1,23 @@
 import { Response, Request } from "express";
-import { CreateLinkService } from "../../../services/create-link.service";
-import { FetchLinkService } from "../../../services/fetch-link.service";
 import { LinkSerializer } from "../response/url/url.response";
+import { FetchLinkService } from "../../../services/link/fetch-link.service";
+import { CreateLinkService } from "../../../services/link/create-link.service";
+
 
 export async function track(req: Request, res: Response) {
 
-     const url = await new FetchLinkService().track(req.body);
+     const url = await new FetchLinkService().track(req.params.track_code, req.body);
 
-     console.log(url)
+     res.json({ 
+          "sucess": true,
+     });
 };
 
 export async function create(req: Request, res: Response) {
 
      const url = await new CreateLinkService().index(req.body);
 
-     res.json({
+     res.json({ 
           "sucess": true,
           "url": LinkSerializer.serialize(url)
      });
