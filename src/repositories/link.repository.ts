@@ -5,6 +5,8 @@ export class LinkRepository {
      constructor() {}
  
      async insert(data: any): Promise<Link> {
-          return await prisma.link.create(data);
+          return await prisma.link.create({
+               data,
+          });
      }
 }

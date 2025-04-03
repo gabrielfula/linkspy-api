@@ -8,10 +8,13 @@ export class CreateLinkService {
           this.linkRepository = new LinkRepository();
      }
  
-     async index(oldUrl: any): Promise<any> {
-         const urlData = await this.generateUrl(oldUrl.old_url);
+     async index(data: any): Promise<any> {
+         const urlData = await this.generateUrl(data.old_url);
 
-         const linkCreated = await this.save(urlData.subdomainUrl, oldUrl.old_url, urlData.trackCode);
+         /* TODO: ajuster UserId Fixo a principio */ 
+         const userId = 1;
+
+         const linkCreated = await this.save(urlData.subdomainUrl, data.old_url, urlData.trackCode, userId);
 
          return linkCreated;
      }
@@ -43,7 +46,7 @@ export class CreateLinkService {
      private formatUrl(domain: string, url: any): object {
           const trackCode = this.generateTrackingCode();
 
-          const subdomainUrl = `https://${domain}.link.com${url.pathname}${url.searchParams.toString() ? '?' + url.searchParams.toString() : ''}&track=${trackCode}`;
+          const subdomainUrl = `https://${domain}.${process.env.BASE_DOMAIN}${url.pathname}${url.searchParams.toString() ? '?' + url.searchParams.toString() : ''}&track=${trackCode}`;
 
           return {
                trackCode: trackCode,
@@ -51,14 +54,20 @@ export class CreateLinkService {
           };
      }
 
-     private async save(newUrl: string, oldUrl: string, track: string): Promise<Link> {
+     private async save(newUrl: string, oldUrl: string, track: string, userId: number): Promise<any> {
           const dataToCreate = {
+               user_id: userId,
                new_link: newUrl,
                original_link: oldUrl,
                track: track
           };
 
-          return await this.linkRepository.insert(dataToCreate);
+          try {
+               return await this.linkRepository.insert(dataToCreate);
+               
+          } catch (error) {
+               console.log('errorrr', error);
+          }
      }
 }
  

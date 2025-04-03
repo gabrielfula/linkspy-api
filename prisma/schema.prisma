@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,69 +8,64 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  uuid         String         @default(uuid())
-  name         String
-  email        String         @unique
-  password     String
-  links        Link[]
-
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-  deleted_at   DateTime?
+  id         Int       @id @default(autoincrement())
+  uuid       String    @default(uuid())
+  name       String
+  email      String    @unique
+  password   String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  links      Link[]
 
   @@map("users")
 }
 
 model Link {
-  id              Int            @id @default(autoincrement())
-  uuid            String         @default(uuid())
-  user_id         Int
-  original_link   String
-  new_link        String
-  track           String
-  user            User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id            Int       @id @default(autoincrement())
+  uuid          String    @default(uuid())
+  user_id       Int
+  original_link String
+  new_link      String
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  deleted_at    DateTime?
+  track         String
+  user          User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  created_at      DateTime       @default(now())
-  updated_at      DateTime       @updatedAt
-  deleted_at      DateTime?
-
+  @@index([user_id], map: "links_user_id_fkey")
   @@map("links")
 }
 
 model Location {
-  id            Int            @id @default(autoincrement())
-  uuid          String         @default(uuid())
-  longitude     String
-  latitude      String         @unique
-  ip_address    String
-  state         String
-  city          String
-
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
-  deleted_at    DateTime?
+  id         Int       @id @default(autoincrement())
+  uuid       String    @default(uuid())
+  longitude  String
+  latitude   String    @unique
+  ip_address String
+  state      String
+  city       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 
   @@map("locations")
 }
 
-
 model IntegrationLog {
-  id            Int            @id @default(autoincrement())
-  uuid          String         @default(uuid())
-  provider      String
-  method        HttpMethod
-  url           String
-  response      String
-  data          String
-
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
-  deleted_at    DateTime?
+  id         Int        @id @default(autoincrement())
+  uuid       String     @default(uuid())
+  provider   String
+  method     HttpMethod
+  url        String
+  response   String
+  data       String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  deleted_at DateTime?
 
   @@map("integration_logs")
 }
-
 
 enum HttpMethod {
   GET

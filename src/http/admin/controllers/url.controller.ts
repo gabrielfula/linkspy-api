@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { CreateLinkService } from "../../../services/create-link.service";
 import { FetchLinkService } from "../../../services/fetch-link.service";
+import { LinkSerializer } from "../response/url/url.response";
 
 export async function track(req: Request, res: Response) {
 
@@ -14,7 +15,8 @@ export async function create(req: Request, res: Response) {
      const url = await new CreateLinkService().index(req.body);
 
      res.json({
-          "url": url
+          "sucess": true,
+          "url": LinkSerializer.serialize(url)
      });
 };
 
