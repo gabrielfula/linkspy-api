@@ -3,6 +3,7 @@ import { LinkSerializer } from "../response/url/url.response";
 import { FetchLinkService } from "../../../services/link/fetch-link.service";
 import { CreateLinkService } from "../../../services/link/create-link.service";
 import { WebSocketService } from "../../../socket/web";
+import { Link } from "@prisma/client";
 
 
 export async function track(req: Request, res: Response) {
@@ -53,9 +54,20 @@ export async function list(req: Request, res: Response) {
      });
 };
 
+export async function getRecentUrl(req: Request, res: Response) {
+
+     const user_id = 1;
+     const url     = await new FetchLinkService().getLastLinksById(user_id);
+
+     res.json({ 
+          "sucess": true,
+          "url": url.map((item: Link) => LinkSerializer.serialize(item))
+     });
+};
 
 export default {
      track,
      create,
-     list
+     list,
+     getRecentUrl
 }

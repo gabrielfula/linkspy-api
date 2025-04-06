@@ -49,6 +49,12 @@ export class FetchLinkService {
         return { error: "Falha ao criar localização" };
     }
 
+    public async getLastLinksById(userId: number): Promise<any>{
+        const links = await this.linkRepository.findLastThreeLinksByUserId(userId);
+
+        return links;
+    }
+
     private async getAddress(latitude: string, longitude: string): Promise<any> {
         try {
             const geocoding = new GeocodingIntegration();

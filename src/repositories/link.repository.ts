@@ -17,4 +17,16 @@ export class LinkRepository {
                }
           });
      }
+
+     async findLastThreeLinksByUserId(userId: number): Promise<Link[]> {
+          return await prisma.link.findMany({
+               where: {
+                    user_id: userId,
+               },
+               orderBy: {
+                    created_at: "desc",
+               },
+               take: 3,
+          });
+     }
 }
