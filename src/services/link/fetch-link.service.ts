@@ -12,8 +12,6 @@ export class FetchLinkService {
     }
 
     public async track(trackCode: string, data: any, userIp: any): Promise<any> {
-        console.log(`em track`, data);
-
         const link = await this.linkRepository.findByTrackCode(trackCode);
 
         if (!link) {
@@ -42,7 +40,10 @@ export class FetchLinkService {
         );
 
         if (location) {
-            return { redirectTo: link.original_link };
+            return {
+                redirectTo: link.original_link,
+                locationId: location.uuid, 
+            };
         }
 
         return { error: "Falha ao criar localização" };

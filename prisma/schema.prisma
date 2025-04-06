@@ -32,6 +32,7 @@ model Link {
   deleted_at    DateTime?
   track_code    String    @unique
   user          User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  locations     Location[]
 
   @@index([user_id], map: "links_user_id_fkey")
   @@map("links")
@@ -41,13 +42,15 @@ model Location {
   id         Int       @id @default(autoincrement())
   uuid       String    @default(uuid())
   longitude  String
-  latitude   String    @unique
+  latitude   String
   ip_address String
   state      String
   city       String
+  link_id    Int
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+  link       Link      @relation(fields: [link_id], references: [id], onDelete: Cascade)
 
   @@map("locations")
 }

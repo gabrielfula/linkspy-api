@@ -2,18 +2,26 @@ import { Response, Request } from "express";
 import { LinkSerializer } from "../response/url/url.response";
 import { FetchLinkService } from "../../../services/link/fetch-link.service";
 import { CreateLinkService } from "../../../services/link/create-link.service";
+import { WebSocketService } from "../../../socket/web";
 
 
 export async function track(req: Request, res: Response) {
-
      const userIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-
      const url = await new FetchLinkService().track(req.params.track_code, req.body, userIp);
-
-     res.json({ 
-          "sucess": true,
-     });
-};
+ 
+     if (url?.redirectTo) {
+          WebSocketService.emit('location-tracked', {
+               trackCode: req.params.track_code,
+               locationId: url.locationId,
+               latitude: req.body.latitude,
+               longitude: req.body.longitude
+          });
+     
+          return res.redirect(302, url.redirectTo);
+     }
+ 
+     res.status(400).json({ success: false, error: "Falha ao rastrear" });
+}
 
 export async function create(req: Request, res: Response) {
 
