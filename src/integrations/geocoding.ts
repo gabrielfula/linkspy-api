@@ -13,7 +13,7 @@ export class GeocodingIntegration extends Base {
           };
      }
 
-     public async getCoordinates(lat: string, lon: string) {
-          // return this.makeRequest(`/reverse?lat=${lat}&lon=${lon}&key=${process.env.GEOCODING_API_KEY}`);
+     public async getCoordinates(latitude: string, longitude: string) {
+          return this.makeRequest(`reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
      }
 }

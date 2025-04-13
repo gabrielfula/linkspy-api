@@ -39,18 +39,21 @@ model Link {
 }
 
 model Location {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @default(uuid())
-  longitude  String
-  latitude   String
-  ip_address String
-  state      String
-  city       String
-  link_id    Int
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
-  link       Link      @relation(fields: [link_id], references: [id], onDelete: Cascade)
+  id                  Int       @id @default(autoincrement())
+  uuid                String    @default(uuid())
+  longitude           String
+  latitude            String
+  ip_address          String
+  state               String
+  city                String
+  cep                 String?
+  neighborhood        String?
+  street              String?
+  link_id             Int
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
+  deleted_at          DateTime?
+  link       Link     @relation(fields: [link_id], references: [id], onDelete: Cascade)
 
   @@map("locations")
 }

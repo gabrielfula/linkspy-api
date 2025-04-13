@@ -18,7 +18,7 @@ export async function track(req: Request, res: Response) {
                longitude: req.body.longitude
           });
 
-          res.status(200).json({ redirect: url.redirectTo });
+          res.status(200).json({ success: true, redirect: url.redirectTo });
      }
  
      res.status(400).json({ success: false, error: "Falha ao rastrear" });

@@ -1,3 +1,4 @@
+import { Link } from "@prisma/client";
 import { HttpError } from "../../errors/exception";
 import { GeocodingIntegration } from "../../integrations/geocoding";
 import { LinkRepository } from "../../repositories/link.repository";
@@ -19,15 +20,16 @@ export class FetchLinkService {
             throw new HttpError("Link informado não foi encontrado!", 400);
         }
 
-        // const address = await this.getAddress(data.latitude, data.longitude);
+        const userAddress = await this.getAddress(data.latitude, data.longitude);
 
-        /* Mock com valores enquando a integraçao nao esta completa */
-        // TODO: estudar as rotas corretamente da integradora
         const mockAddress = {
-            longitude: data.longitude,
-            latitude: data.latitude,
-            city: "Campinas",
-            state: "SP",
+            longitude:      data.longitude,
+            latitude:       data.latitude,
+            city:           userAddress.address.city,
+            state:          userAddress.address.state,
+            cep:            userAddress.address.postcode,
+            neighborhood:   userAddress.address.quarter,
+            street:         userAddress.address.road
         };
 
         const location = await this.createLocationService.save(
@@ -49,7 +51,7 @@ export class FetchLinkService {
         throw new HttpError("Erro ao buscar link", 500);
     }
 
-    public async getLastLinksById(userId: number): Promise<any>{
+    public async getLastLinksById(userId: number): Promise<Link[]>{
         const links = await this.linkRepository.findLastThreeLinksByUserId(userId);
 
         return links;
@@ -60,8 +62,7 @@ export class FetchLinkService {
             const geocoding = new GeocodingIntegration();
             return await geocoding.getCoordinates(latitude, longitude);
         } catch (error) {
-            console.error("Erro ao obter coordenadas:", error);
-            return null;
+            throw new HttpError("Erro ao buscar localização", 500)
         }
     }
 }
