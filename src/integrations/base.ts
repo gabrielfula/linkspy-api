@@ -17,6 +17,7 @@ export abstract class Base {
      
           try {
                const response = await fetch(url, options);
+               // TODO: ADD INTEGRATION ROW
                return await response.json();
           } catch (error) {
                throw error;

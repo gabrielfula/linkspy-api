@@ -10,18 +10,14 @@ export async function track(req: Request, res: Response) {
      const userIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
      const url = await new FetchLinkService().track(req.body, userIp);
  
-     if (url?.redirectTo) {
-          WebSocketService.emit('location-tracked', {
-               trackCode: req.params.track_code,
-               locationId: url.locationId,
-               latitude: req.body.latitude,
-               longitude: req.body.longitude
-          });
+     WebSocketService.emit('location-tracked', {
+          trackCode: req.params.track_code,
+          locationId: url.locationId,
+          latitude: req.body.latitude,
+          longitude: req.body.longitude
+     });
 
-          res.status(200).json({ success: true, redirect: url.redirectTo });
-     }
- 
-     res.status(400).json({ success: false, error: "Falha ao rastrear" });
+     res.status(200).json({ success: true, redirect: url.redirectTo });
 }
 
 export async function create(req: Request, res: Response) {

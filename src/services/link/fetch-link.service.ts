@@ -22,23 +22,16 @@ export class FetchLinkService {
 
         const userAddress = await this.getAddress(data.latitude, data.longitude);
 
-        const mockAddress = {
-            longitude:      data.longitude,
-            latitude:       data.latitude,
-            city:           userAddress.address.city,
-            state:          userAddress.address.state,
-            cep:            userAddress.address.postcode,
-            neighborhood:   userAddress.address.quarter,
-            street:         userAddress.address.road
-        };
-
         const location = await this.createLocationService.save(
             data.longitude,
             data.latitude,
-            mockAddress.state,
-            mockAddress.city,
+            userAddress.address.state,
+            userAddress.address.city,
             link.id,
             userIp,
+            userAddress.address.postcode,
+            userAddress.address.quarter,
+            userAddress.address.road
         );
 
         if (location) {
