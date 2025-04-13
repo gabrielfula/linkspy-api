@@ -8,7 +8,7 @@ import { Link } from "@prisma/client";
 
 export async function track(req: Request, res: Response) {
      const userIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-     const url = await new FetchLinkService().track(req.params.track_code, req.body, userIp);
+     const url = await new FetchLinkService().track(req.body, userIp);
  
      if (url?.redirectTo) {
           WebSocketService.emit('location-tracked', {
@@ -18,7 +18,7 @@ export async function track(req: Request, res: Response) {
                longitude: req.body.longitude
           });
 
-          return res.redirect(302, url.redirectTo);
+          res.status(200).json({ redirect: url.redirectTo });
      }
  
      res.status(400).json({ success: false, error: "Falha ao rastrear" });

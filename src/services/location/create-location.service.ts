@@ -1,3 +1,4 @@
+import { HttpError } from "../../errors/exception";
 import { LocationRepository } from "../../repositories/location.repository";
 
 export class CreateLocationService {
@@ -9,8 +10,8 @@ export class CreateLocationService {
  
      public async save(longitude: string, latitude: string, state: string, city: string, linkId: number, ipAddress: any): Promise<any> {
           const dataToCreate = {
-               longitude:  longitude,
-               latitude:   latitude,
+               longitude:  longitude.toString(),
+               latitude:   latitude.toString(),
                city:       city,
                state:      state,
                ip_address: ipAddress,
@@ -18,10 +19,11 @@ export class CreateLocationService {
           };
 
           try {
-               return await this.locationRepository.insert(dataToCreate);
-               
+               const location = await this.locationRepository.insert(dataToCreate);
+
+               return location;
           } catch (error) {
-               console.log('errorrr', error);
+               throw new HttpError("Erro ao criar localização", 500);
           }
      }
 }

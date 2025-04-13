@@ -1,3 +1,4 @@
+import { HttpError } from "../../errors/exception";
 import { GeocodingIntegration } from "../../integrations/geocoding";
 import { LinkRepository } from "../../repositories/link.repository";
 import { CreateLocationService } from "../location/create-location.service";
@@ -11,15 +12,14 @@ export class FetchLinkService {
         this.createLocationService = new CreateLocationService();
     }
 
-    public async track(trackCode: string, data: any, userIp: any): Promise<any> {
-        const link = await this.linkRepository.findByTrackCode(trackCode);
+    public async track(data: any, userIp: any): Promise<any> {
+        const link = await this.linkRepository.findByTrackCode(data.track);
 
         if (!link) {
-            console.log("retornar erro aqui");
-            return
+            throw new HttpError("Link informado não foi encontrado!", 400);
         }
 
-        const address = await this.getAddress(data.latitude, data.longitude);
+        // const address = await this.getAddress(data.latitude, data.longitude);
 
         /* Mock com valores enquando a integraçao nao esta completa */
         // TODO: estudar as rotas corretamente da integradora
@@ -46,7 +46,7 @@ export class FetchLinkService {
             };
         }
 
-        return { error: "Falha ao criar localização" };
+        throw new HttpError("Erro ao buscar link", 500);
     }
 
     public async getLastLinksById(userId: number): Promise<any>{

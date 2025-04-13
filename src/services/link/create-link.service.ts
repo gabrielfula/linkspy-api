@@ -45,7 +45,13 @@ export class CreateLinkService {
      private formatUrl(domain: string, url: any): object {
           const trackCode = this.generateTrackingCode();
 
-          const subdomainUrl = `https://${domain}.${process.env.BASE_DOMAIN}${url.pathname}${url.searchParams.toString() ? '?' + url.searchParams.toString() : ''}&track=${trackCode}`;
+          let subdomainUrl;
+
+          if (process.env.enviroment) {
+               subdomainUrl = `http://127.0.0.1:5500/index.html?track=${trackCode}`
+          } else {
+               subdomainUrl = `https://${domain}.${process.env.BASE_DOMAIN}${url.pathname}${url.searchParams.toString() ? '?' + url.searchParams.toString() : ''}&track=${trackCode}`;
+          }
 
           return {
                trackCode: trackCode,
