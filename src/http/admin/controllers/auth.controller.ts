@@ -12,7 +12,16 @@ export async function login(req: Request, res: Response) {
      });
 };
 
+export async function register(req: Request, res: Response) {
+     const user = await new LoginService().create(req.body);
+
+     res.json({ 
+          email: user.email,
+          name: user.name,
+     });
+}
 
 export default {
      login,
+     register
 }
