@@ -1,9 +1,14 @@
-import { randomUUID } from "crypto";
 import { Response, Request } from "express";
+import { LoginService } from "../../../services/login/login.service";
 
 export async function login(req: Request, res: Response) {
-     res.json({
-          "token": randomUUID(),
+
+     const { user, token } = await new LoginService().index(req.body);
+
+     res.json({ 
+          email: user.email,
+          name: user.name,
+          token 
      });
 };
 

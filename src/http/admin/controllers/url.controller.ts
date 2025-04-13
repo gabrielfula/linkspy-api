@@ -17,7 +17,7 @@ export async function track(req: Request, res: Response) {
                latitude: req.body.latitude,
                longitude: req.body.longitude
           });
-     
+
           return res.redirect(302, url.redirectTo);
      }
  

@@ -16,13 +16,17 @@
           "@types/cors": "^2.8.17",
           "@types/express": "^5.0.0",
           "@types/node": "^22.10.7",
+          "bcryptjs": "^3.0.2",
           "cors": "^2.8.5",
           "dotenv": "^16.4.7",
           "express": "^4.21.2",
+          "express-async-errors": "^3.1.1",
+          "jsonwebtoken": "^9.0.2",
           "socket.io": "^4.8.1",
           "typescript": "^5.7.3"
      },
      "devDependencies": {
+          "@types/jsonwebtoken": "^9.0.9",
           "nodemon": "^3.1.9",
           "prisma": "^6.5.0",
           "ts-node": "^10.9.2"
