@@ -1,3 +1,4 @@
+import 'express-async-errors';
 import express, { Express } from 'express';
 import cors from 'cors';
 import adminRoutes from "./routes/index";
@@ -5,6 +6,7 @@ import dotenv from 'dotenv';
 import { subdomainMiddleware } from './middlewares/subdomain';
 import { WebSocketService } from './socket/web';
 import http from "http";
+import { errorMiddleware } from './middlewares/error';
 
 dotenv.config();
 const app: Express = express();
@@ -17,5 +19,6 @@ WebSocketService.init(server);
 app.use(subdomainMiddleware);
 
 app.use('/v1', adminRoutes);
+app.use(errorMiddleware);
 
-export { app, server } ;
+export { app, server };
