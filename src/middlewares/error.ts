@@ -10,5 +10,5 @@ export function errorMiddleware(
   const statusCode = err instanceof HttpError ? err.statusCode : 500;
   const message = err.message || "Erro interno do servidor";
 
-  res.status(statusCode).json({ success: false, error: message });
+  res.status(statusCode).json({ success: false, message: message });
 }

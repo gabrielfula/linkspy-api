@@ -7,11 +7,8 @@ export class CreateLinkService {
           this.linkRepository = new LinkRepository();
      }
  
-     async index(data: any): Promise<any> {
+     async index(data: any, userId: number): Promise<any> {
          const urlData = await this.generateUrl(data.old_url);
-
-         // TODO: ajuster UserId Fixo a principio
-         const userId = 1;
 
          const linkCreated = await this.save(urlData.subdomainUrl, data.old_url, urlData.trackCode, userId);
 

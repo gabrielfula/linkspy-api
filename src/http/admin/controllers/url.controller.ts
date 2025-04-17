@@ -22,21 +22,24 @@ export async function track(req: Request, res: Response) {
 
 export async function create(req: Request, res: Response) {
 
-     const url = await new CreateLinkService().index(req.body);
+     const userId = req.headers["x-account-code"];
+
+     const url = await new CreateLinkService().index(req.body, parseInt(userId as string));
 
      res.json({ 
-          "sucess": true,
-          "url": LinkSerializer.serialize(url)
+          success: true,
+          url: LinkSerializer.serialize(url)
      });
 };
 
 export async function list(req: Request, res: Response) {
 
-     const user_id = 1; /* Passar esse valor para sempre buscar pelo user, como se fosse um filtro */
+     const userId = req.headers["x-account-code"];
 
      res.json({
-          "user": "Usuário teste", 
-          "url": [
+          success: true,
+          user: "Usuário teste", 
+          url: [
                {
                     "url1": "url1.com.br",
                },
@@ -52,12 +55,12 @@ export async function list(req: Request, res: Response) {
 
 export async function getRecentUrl(req: Request, res: Response) {
 
-     const user_id = 1;
-     const url     = await new FetchLinkService().getLastLinksById(user_id);
+     const userId = req.headers["x-account-code"];
+     const url     = await new FetchLinkService().getLastLinksById(parseInt(userId as string));
 
      res.json({ 
-          "sucess": true,
-          "url": url.map((item: Link) => LinkSerializer.serialize(item))
+          success: true,
+          url: url.map((item: Link) => LinkSerializer.serialize(item))
      });
 };
 

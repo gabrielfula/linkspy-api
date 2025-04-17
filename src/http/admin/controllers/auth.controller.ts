@@ -5,17 +5,20 @@ export async function login(req: Request, res: Response) {
 
      const { user, token } = await new LoginService().index(req.body);
 
-     res.json({ 
-          email: user.email,
-          name: user.name,
-          token 
+     res.json({
+          id:       user.id,
+          success:  true,
+          email:    user.email,
+          name:     user.name,
+          token:    token
      });
 };
 
 export async function register(req: Request, res: Response) {
      const user = await new LoginService().create(req.body);
 
-     res.json({ 
+     res.json({
+          success: true,
           email: user.email,
           name: user.name,
      });

@@ -17,7 +17,7 @@ export class LoginService {
           const user = await this.userRepository.findByUsername(data.username);
 
           if (!user) {
-               throw new HttpError("Credenciais inválidas", 401);
+               throw new HttpError("Credenciais inválidas", 400);
           }
 
           await this.validateCredentials(user.password, data.password);
@@ -45,20 +45,20 @@ export class LoginService {
           const isMatch = await bcrypt.compare(password, originalPassword);
 
           if (!isMatch) {
-               throw new HttpError("Credenciais inválidas", 401);
+               throw new HttpError("Credenciais inválidas", 400);
           }
 
           return isMatch;
      }
 
-     private generateToken(): string {
+     protected generateToken(): string {
           return jwt.sign({
                exp: Math.floor(Date.now() / 1000) + (60 * 60),
                data: 'foobar'
           }, process.env.JWT_SECRET!);
      }
 
-     private async generateHash(password: string): Promise<string> {
+     protected async generateHash(password: string): Promise<string> {
           const saltRounds = 10;
           const hash       = await bcrypt.hash(password, saltRounds);
           return hash; 
