@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id         Int       @id @default(autoincrement())
-  uuid       String    @default(uuid())
+  uuid       String    @unique @default(uuid())
   name       String
   email      String    @unique
   password   String
@@ -23,10 +23,11 @@ model User {
 
 model Link {
   id            Int       @id @default(autoincrement())
-  uuid          String    @default(uuid())
+  uuid          String    @unique @default(uuid())
   user_id       Int
   original_link String
   new_link      String
+  alias         String?
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
   deleted_at    DateTime?
@@ -40,7 +41,7 @@ model Link {
 
 model Location {
   id                  Int       @id @default(autoincrement())
-  uuid                String    @default(uuid())
+  uuid                String    @unique @default(uuid())
   longitude           String
   latitude            String
   ip_address          String
@@ -60,7 +61,7 @@ model Location {
 
 model IntegrationLog {
   id         Int        @id @default(autoincrement())
-  uuid       String     @default(uuid())
+  uuid       String     @unique @default(uuid())
   provider   String
   method     HttpMethod
   url        String

@@ -8,6 +8,7 @@ router.post('/', AuthenticatedMiddleware, UrlController.create);
 router.post('/track', UrlController.track);
 router.get('/list', AuthenticatedMiddleware, UrlController.list);
 router.get('/recent', AuthenticatedMiddleware, UrlController.getRecentUrl);
+router.get('/details/:uuid', AuthenticatedMiddleware, UrlController.details);
 
 
 export default router;

@@ -19,6 +19,16 @@ export class FetchLinkService {
         return links;
     }
 
+    public async getByUuid(uuid: string): Promise<Link>{
+        const link = await this.linkRepository.findByUuid(uuid);
+
+        if (!link) {
+            throw new HttpError("Link informado não foi encontrado!", 400);
+        }
+
+        return link;
+    }
+
     public async track(data: any, userIp: any): Promise<any> {
         const link = await this.linkRepository.findByTrackCode(data.track);
 

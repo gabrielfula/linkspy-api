@@ -29,4 +29,15 @@ export class LinkRepository {
                ...(take ? { take } : {}),
           });
      }
+
+     async findByUuid(uuid: string): Promise<Link | null> {
+          return await prisma.link.findUnique({
+               where: {
+                    uuid
+               },
+               include: {
+                    locations: true
+               }
+          });
+     }
 }
