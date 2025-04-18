@@ -18,7 +18,7 @@ export class LinkRepository {
           });
      }
 
-     async findLastThreeLinksByUserId(userId: number): Promise<Link[]> {
+     async findLinksByUserId(userId: number, take?: number): Promise<Link[]> {
           return await prisma.link.findMany({
                where: {
                     user_id: userId,
@@ -26,7 +26,7 @@ export class LinkRepository {
                orderBy: {
                     created_at: "desc",
                },
-               take: 3,
+               ...(take ? { take } : {}),
           });
      }
 }

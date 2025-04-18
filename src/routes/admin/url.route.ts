@@ -4,12 +4,10 @@ import { AuthenticatedMiddleware } from '../../middlewares/authenticated';
 
 const router = express.Router();
 
-router.use(AuthenticatedMiddleware);
-
-router.post('/', UrlController.create);
+router.post('/', AuthenticatedMiddleware, UrlController.create);
 router.post('/track', UrlController.track);
-router.get('/list', UrlController.list);
-router.get('/recent', UrlController.getRecentUrl);
+router.get('/list', AuthenticatedMiddleware, UrlController.list);
+router.get('/recent', AuthenticatedMiddleware, UrlController.getRecentUrl);
 
 
 export default router;

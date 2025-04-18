@@ -35,21 +35,11 @@ export async function create(req: Request, res: Response) {
 export async function list(req: Request, res: Response) {
 
      const userId = req.headers["x-account-code"];
+     const url    = await new FetchLinkService().index(parseInt(userId as string));
 
-     res.json({
+     res.json({ 
           success: true,
-          user: "Usuário teste", 
-          url: [
-               {
-                    "url1": "url1.com.br",
-               },
-               {
-                    "url2": "url2.com.br",
-               },
-               {
-                    "url3": "url3.com.br",
-               }
-          ]
+          url: url.map((item: Link) => LinkSerializer.serialize(item))
      });
 };
 

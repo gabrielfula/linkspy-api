@@ -13,6 +13,12 @@ export class FetchLinkService {
         this.createLocationService = new CreateLocationService();
     }
 
+    public async index(userId: number): Promise<Link[]>{
+        const links = await this.linkRepository.findLinksByUserId(userId);
+
+        return links;
+    }
+
     public async track(data: any, userIp: any): Promise<any> {
         const link = await this.linkRepository.findByTrackCode(data.track);
 
@@ -45,7 +51,7 @@ export class FetchLinkService {
     }
 
     public async getLastLinksById(userId: number): Promise<Link[]>{
-        const links = await this.linkRepository.findLastThreeLinksByUserId(userId);
+        const links = await this.linkRepository.findLinksByUserId(userId, 3);
 
         return links;
     }
