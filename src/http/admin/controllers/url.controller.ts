@@ -10,12 +10,16 @@ import { LinkDetailsSerializer } from "../response/url/url-details.response";
 export async function track(req: Request, res: Response) {
      const userIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
      const url = await new FetchLinkService().track(req.body, userIp);
- 
+
      WebSocketService.emit('location-tracked', {
           trackCode: req.params.track_code,
           locationId: url.locationId,
           latitude: req.body.latitude,
-          longitude: req.body.longitude
+          longitude: req.body.longitude,
+          state: url.location.state,
+          city: url.location.city,
+          neighborhood: url.location.neighborhood,
+          street: url.location.street,
      });
 
      res.status(200).json({ success: true, redirect: url.redirectTo });

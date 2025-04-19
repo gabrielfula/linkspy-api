@@ -53,7 +53,8 @@ export class FetchLinkService {
         if (location) {
             return {
                 redirectTo: link.original_link,
-                locationId: location.uuid, 
+                locationId: location.uuid,
+                location
             };
         }
 
