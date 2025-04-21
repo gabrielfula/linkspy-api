@@ -1,3 +1,4 @@
+import { HttpError } from "../../errors/exception";
 import { LinkRepository } from "../../repositories/link.repository";
 
 export class CreateLinkService {
@@ -10,7 +11,7 @@ export class CreateLinkService {
      async index(data: any, userId: number): Promise<any> {
          const urlData = await this.generateUrl(data.old_url);
 
-         const linkCreated = await this.save(urlData.subdomainUrl, data.old_url, urlData.trackCode, userId);
+         const linkCreated = await this.save(urlData.subdomainUrl, data.old_url, urlData.trackCode, userId, data.alias);
 
          return linkCreated;
      }
@@ -56,19 +57,20 @@ export class CreateLinkService {
           };
      }
 
-     private async save(newUrl: string, oldUrl: string, track: string, userId: number): Promise<any> {
+     private async save(newUrl: string, oldUrl: string, track: string, userId: number, alias: string): Promise<any> {
           const dataToCreate = {
                user_id: userId,
                new_link: newUrl,
                original_link: oldUrl,
-               track_code: track
+               track_code: track,
+               alias: alias,
           };
 
           try {
                return await this.linkRepository.insert(dataToCreate);
                
           } catch (error) {
-               console.log('errorrr', error);
+               throw new HttpError("Não foi possível criar o link!", 400);
           }
      }
 }

@@ -1,9 +1,10 @@
 export class LinkSerializer {
-     static serialize(user: any) {
+     static serialize(data: any) {
           return {
-               uuid: user.uuid,
-               original_link: user.original_link,
-               new_link: user.new_link,
+               uuid: data.uuid,
+               original_link: data.original_link,
+               new_link: data.new_link,
+               alias: data.alias
           };
      }
 }

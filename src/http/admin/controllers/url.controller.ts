@@ -29,7 +29,7 @@ export async function create(req: Request, res: Response) {
 
      const userId = req.headers["x-account-code"];
 
-     const url = await new CreateLinkService().index(req.body, parseInt(userId as string));
+     const url = await new CreateLinkService().index(req.body.data, parseInt(userId as string));
 
      res.json({ 
           success: true,
