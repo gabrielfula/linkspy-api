@@ -9,17 +9,20 @@ import { LinkDetailsSerializer } from "../response/url/url-details.response";
 
 export async function track(req: Request, res: Response) {
      const userIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-     const url = await new FetchLinkService().track(req.body, userIp);
+     const url    = await new FetchLinkService().track(req.body, userIp);
 
      WebSocketService.emit('location-tracked', {
-          trackCode: req.params.track_code,
-          locationId: url.locationId,
-          latitude: req.body.latitude,
-          longitude: req.body.longitude,
-          state: url.location.state,
-          city: url.location.city,
-          neighborhood: url.location.neighborhood,
-          street: url.location.street,
+          location: {
+               trackCode: req.params.track_code,
+               locationId: url.locationId,
+               latitude: url.location.latitude,
+               longitude: url.location.longitude,
+               state: url.location.state,
+               city: url.location.city,
+               neighborhood: url.location.neighborhood,
+               street: url.location.street,
+               cep: url.location.cep,
+          }
      });
 
      res.status(200).json({ success: true, redirect: url.redirectTo });
@@ -28,8 +31,7 @@ export async function track(req: Request, res: Response) {
 export async function create(req: Request, res: Response) {
 
      const userId = req.headers["x-account-code"];
-
-     const url = await new CreateLinkService().index(req.body.data, parseInt(userId as string));
+     const url    = await new CreateLinkService().index(req.body.data, parseInt(userId as string));
 
      res.json({ 
           success: true,
@@ -51,7 +53,7 @@ export async function list(req: Request, res: Response) {
 export async function getRecentUrl(req: Request, res: Response) {
 
      const userId = req.headers["x-account-code"];
-     const url     = await new FetchLinkService().getLastLinksById(parseInt(userId as string));
+     const url    = await new FetchLinkService().getLastLinksById(parseInt(userId as string));
 
      res.json({ 
           success: true,
