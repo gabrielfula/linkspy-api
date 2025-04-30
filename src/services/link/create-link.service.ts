@@ -46,9 +46,9 @@ export class CreateLinkService {
           let subdomainUrl;
 
           if (process.env.enviroment) {
-               subdomainUrl = `http://127.0.0.1:5500/index.html?track=${trackCode}`
+               subdomainUrl = `${process.env.BASE_DOMAIN}/?track=${trackCode}`;
           } else {
-               subdomainUrl = `https://${domain}.${process.env.BASE_DOMAIN}${url.pathname}${url.searchParams.toString() ? '?' + url.searchParams.toString() : ''}&track=${trackCode}`;
+               subdomainUrl = `https://${process.env.BASE_DOMAIN}/${domain}${url.pathname}${url.searchParams.toString() ? '?' + url.searchParams.toString() : ''}&track=${trackCode}`;
           }
 
           return {
@@ -70,7 +70,7 @@ export class CreateLinkService {
                return await this.linkRepository.insert(dataToCreate);
                
           } catch (error) {
-               throw new HttpError("Não foi possível criar o link!", 400);
+               throw new HttpError("Não foi possível criar o link", 400);
           }
      }
 }
