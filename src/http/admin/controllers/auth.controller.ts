@@ -1,5 +1,8 @@
 import { Response, Request } from "express";
 import { LoginService } from "../../../services/login/login.service";
+import { validateDto } from "../../../middlewares/validateDto";
+import { LoginDTO } from "../dtos/auth/login.dto";
+import { RegisterDTO } from "../dtos/auth/register.dto";
 
 export async function login(req: Request, res: Response) {
 
@@ -25,6 +28,6 @@ export async function register(req: Request, res: Response) {
 }
 
 export default {
-     login,
-     register
-}
+     login: [validateDto(LoginDTO), login],
+     register: [validateDto(RegisterDTO), register],
+};

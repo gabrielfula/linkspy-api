@@ -5,6 +5,9 @@ import { CreateLinkService } from "../../../services/link/create-link.service";
 import { WebSocketService } from "../../../socket/web";
 import { Link } from "@prisma/client";
 import { LinkDetailsSerializer } from "../response/url/url-details.response";
+import { validateDto } from "../../../middlewares/validateDto";
+import { CreateTrackDTO } from "../dtos/url/create-track.dto";
+import { CreateUrlDTO } from "../dtos/url/create-url.dto";
 
 
 export async function track(req: Request, res: Response) {
@@ -31,7 +34,7 @@ export async function track(req: Request, res: Response) {
 export async function create(req: Request, res: Response) {
 
      const userId = req.headers["x-account-code"];
-     const url    = await new CreateLinkService().index(req.body.data, parseInt(userId as string));
+     const url    = await new CreateLinkService().index(req.body, parseInt(userId as string));
 
      res.json({ 
           success: true,
@@ -72,8 +75,8 @@ export async function details(req: Request, res: Response) {
 };
 
 export default {
-     track,
-     create,
+     track: [validateDto(CreateTrackDTO), track],
+     create: [validateDto(CreateUrlDTO), create],
      list,
      details,
      getRecentUrl
