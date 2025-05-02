@@ -3,7 +3,7 @@ import { LinkSerializer } from "../response/url/url.response";
 import { FetchLinkService } from "../../../services/link/fetch-link.service";
 import { CreateLinkService } from "../../../services/link/create-link.service";
 import { WebSocketService } from "../../../socket/web";
-import { Link } from "@prisma/client";
+
 import { LinkDetailsSerializer } from "../response/url/url-details.response";
 import { validateDto } from "../../../middlewares/validateDto";
 import { CreateTrackDTO } from "../dtos/url/create-track.dto";
@@ -49,7 +49,7 @@ export async function list(req: Request, res: Response) {
 
      res.json({ 
           success: true,
-          url: url.map((item: Link) => LinkSerializer.serialize(item))
+          url: url.map((item: any) => LinkSerializer.serialize(item))
      });
 };
 
@@ -60,7 +60,7 @@ export async function getRecentUrl(req: Request, res: Response) {
 
      res.json({ 
           success: true,
-          url: url.map((item: Link) => LinkSerializer.serialize(item))
+          url: url.map((item: any) => LinkSerializer.serialize(item))
      });
 };
 

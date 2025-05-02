@@ -1,4 +1,3 @@
-import { User } from "@prisma/client";
 import { HttpError } from "../../errors/exception";
 import { UserRepository } from "../../repositories/user.repository";
 import bcrypt from 'bcryptjs';
@@ -64,7 +63,7 @@ export class LoginService {
           return hash; 
      }
 
-     private async save(data: any): Promise<User | null> {
+     private async save(data: any): Promise<any | null> {
           const dataUser = {
               name:     data.name,
               email:    data.username,

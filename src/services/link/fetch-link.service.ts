@@ -1,4 +1,3 @@
-import { Link } from "@prisma/client";
 import { HttpError } from "../../errors/exception";
 import { GeocodingIntegration } from "../../integrations/geocoding";
 import { LinkRepository } from "../../repositories/link.repository";
@@ -13,13 +12,13 @@ export class FetchLinkService {
         this.createLocationService = new CreateLocationService();
     }
 
-    public async index(userId: number): Promise<Link[]>{
+    public async index(userId: number): Promise<any[]>{
         const links = await this.linkRepository.findLinksByUserId(userId);
 
         return links;
     }
 
-    public async getByUuid(uuid: string): Promise<Link>{
+    public async getByUuid(uuid: string): Promise<any>{
         const link = await this.linkRepository.findByUuid(uuid);
 
         if (!link) {
@@ -61,7 +60,7 @@ export class FetchLinkService {
         throw new HttpError("Erro ao buscar link", 500);
     }
 
-    public async getLastLinksById(userId: number): Promise<Link[]>{
+    public async getLastLinksById(userId: number): Promise<any[]>{
         const links = await this.linkRepository.findLinksByUserId(userId, 3);
 
         return links;
