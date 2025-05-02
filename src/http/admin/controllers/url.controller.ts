@@ -75,7 +75,7 @@ export async function details(req: Request, res: Response) {
 };
 
 export default {
-     track: [validateDto(CreateTrackDTO), track],
+     track,
      create: [validateDto(CreateUrlDTO), create],
      list,
      details,
