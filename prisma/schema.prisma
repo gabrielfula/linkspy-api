@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -35,7 +35,7 @@ model Link {
   user          User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   locations     Location[]
 
-  @@index([user_id], map: "links_user_id_fkey")
+  @@index([user_id])
   @@map("links")
 }
 
