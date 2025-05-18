@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: linkspy-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 102030
+      POSTGRES_DB: linkspy
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: linkspy-api
+    image: linkspy-api
+    ports:
+      - "4001:4001"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    command: sh -c "npx prisma generate && npm run start"
+
+volumes:
+  pgdata:
