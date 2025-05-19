@@ -46,7 +46,11 @@ export class CreateLinkService {
           let subdomainUrl;
 
           if (process.env.enviroment) {
-               subdomainUrl = `${process.env.BASE_DOMAIN}/?track=${trackCode}`;
+               const hasSearchParams = url.searchParams.toString().length > 0;
+               const search = hasSearchParams ? `?${url.searchParams.toString()}` : '';
+               const joiner = hasSearchParams ? '&' : '?';
+
+               subdomainUrl = `${process.env.BASE_DOMAIN}/${domain}${url.pathname}${search}${joiner}track=${trackCode}`;
           } else {
                const hasSearchParams = url.searchParams.toString().length > 0;
                const search = hasSearchParams ? `?${url.searchParams.toString()}` : '';
