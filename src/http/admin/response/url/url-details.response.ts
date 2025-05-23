@@ -1,3 +1,5 @@
+import { formatMask } from "../../../../helpers/helper";
+
 export class LinkDetailsSerializer {
      static serialize(data: any) {
           return {
@@ -13,7 +15,7 @@ export class LinkDetailsSerializer {
                          state: data.locations?.[data.locations.length - 1]?.state ?? null,
                          city: data.locations?.[data.locations.length - 1]?.city ?? null,
                          street: data.locations?.[data.locations.length - 1]?.street ?? null,
-                         cep: data.locations?.[data.locations.length - 1]?.cep ?? null,
+                         cep: formatMask(data.locations?.[data.locations.length - 1]?.cep, "######-###") ?? null,
                          neighborhood: data.locations?.[data.locations.length - 1]?.neighborhood ?? null,
                     },
                     locations_history: data.locations || [],
