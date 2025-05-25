@@ -50,7 +50,7 @@ export async function getRecentUrl(req: Request, res: Response) {
 
 export async function details(req: Request, res: Response) {
 
-     const url  = await new FetchLinkService().getByUuid(req.params.uuid);
+     const url = await new FetchLinkService().getByUuid(req.params.uuid);
 
      res.json({ 
           success: true,

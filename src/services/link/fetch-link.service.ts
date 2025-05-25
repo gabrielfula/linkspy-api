@@ -1,7 +1,11 @@
+import { Link } from "@prisma/client";
 import { HttpError } from "../../errors/exception";
+import { LinkSerializer } from "../../http/admin/response/url/url.response";
 import { GeocodingIntegration } from "../../integrations/geocoding";
 import { LinkRepository } from "../../repositories/link.repository";
+import { WebSocketService } from "../../socket/web";
 import { CreateLocationService } from "../location/create-location.service";
+import { LinkEntity } from "../../entities/link.entity";
 
 export class FetchLinkService {
     private linkRepository: LinkRepository;
@@ -12,13 +16,13 @@ export class FetchLinkService {
         this.createLocationService = new CreateLocationService();
     }
 
-    public async index(userId: number): Promise<any[]>{
+    public async index(userId: number): Promise<Link[]>{
         const links = await this.linkRepository.findLinksByUserId(userId);
 
         return links;
     }
 
-    public async getByUuid(uuid: string): Promise<any>{
+    public async getByUuid(uuid: string): Promise<Link>{
         const link = await this.linkRepository.findByUuid(uuid);
 
         if (!link) {
@@ -50,6 +54,12 @@ export class FetchLinkService {
         );
 
         if (location) {
+
+            WebSocketService.emit(`location-update`, {
+                uuid: link.uuid,
+                url:  LinkSerializer.serialize(link)
+            });
+
             return {
                 redirectTo: link.original_link,
                 locationId: location.uuid,
@@ -60,7 +70,7 @@ export class FetchLinkService {
         throw new HttpError("Erro ao buscar link", 500);
     }
 
-    public async getLastLinksById(userId: number): Promise<any[]>{
+    public async getLastLinksById(userId: number): Promise<LinkEntity[]>{
         const links = await this.linkRepository.findLinksByUserId(userId, 3);
 
         return links;

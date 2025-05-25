@@ -1,4 +1,6 @@
+import { Link } from "@prisma/client";
 import prisma from "../configs/prisma";
+import { LinkEntity } from "../entities/link.entity";
 
 export class LinkRepository {
      constructor() {}
@@ -9,15 +11,17 @@ export class LinkRepository {
           });
      }
 
-     async findByTrackCode(trackCode: string): Promise<any | null> {
+     async findByTrackCode(trackCode: string): Promise<LinkEntity | null> {
           return await prisma.link.findUnique({
                where: {
                     track_code: trackCode
+               }, include: {
+                    locations: true
                }
           });
      }
 
-     async findLinksByUserId(userId: number, take?: number): Promise<any[]> {
+     async findLinksByUserId(userId: number, take?: number): Promise<LinkEntity[]> {
           return await prisma.link.findMany({
                where: {
                     user_id: userId,
@@ -29,7 +33,7 @@ export class LinkRepository {
           });
      }
 
-     async findByUuid(uuid: string): Promise<any | null> {
+     async findByUuid(uuid: string): Promise<Link | null> {
           return await prisma.link.findUnique({
                where: {
                     uuid
