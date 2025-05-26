@@ -8,6 +8,8 @@ export const removePontuation = (text: string): string => {
 
 
 export const formatMask = (text: string, mask: string): string => {
+    if (!text) return '';
+
     const textOnlyDigits = text.replace(/\D/g, '');
     const maskChars = mask.split('');
     let formatted = '';

@@ -23,7 +23,7 @@ export class CreateLinkService {
                
                const domain = this.extractDomain(urlObj.hostname);
      
-               const urlData = this.formatUrl(domain, urlObj);
+               const urlData = await this.formatUrl(domain, urlObj);
                
                return urlData;
           } catch (error: any) {
@@ -40,30 +40,49 @@ export class CreateLinkService {
          return Math.random().toString(36).substring(2, 10);
      }
 
-     private formatUrl(domain: string, url: any): object {
-          const trackCode = this.generateTrackingCode();
+     private async formatUrl(domain: string, url: any): Promise<object> {
+          const trackCode        = this.generateTrackingCode();
+          const domainWithoutDot = await this.extractMainDomain(domain);
+          const hasSearchParams  = url.searchParams.toString().length > 0;
+          const search           = hasSearchParams ? `?${url.searchParams.toString()}` : '';
+          const joiner           = hasSearchParams ? '&' : '?';
+          const isDev            = process.env.enviroment === 'development';
 
-          let subdomainUrl;
-
-          if (process.env.enviroment) {
-               const hasSearchParams = url.searchParams.toString().length > 0;
-               const search = hasSearchParams ? `?${url.searchParams.toString()}` : '';
-               const joiner = hasSearchParams ? '&' : '?';
-
-               subdomainUrl = `${process.env.BASE_DOMAIN}/${domain}${url.pathname}${search}${joiner}track=${trackCode}`;
-          } else {
-               const hasSearchParams = url.searchParams.toString().length > 0;
-               const search = hasSearchParams ? `?${url.searchParams.toString()}` : '';
-               const joiner = hasSearchParams ? '&' : '?';
-
-               subdomainUrl = `https://${process.env.BASE_DOMAIN}/${domain}${url.pathname}${search}${joiner}track=${trackCode}`;
-          }
+          const subdomainUrl     = isDev
+               ? `${domainWithoutDot}.${process.env.BASE_DOMAIN}${search}${joiner}track=${trackCode}:5173`
+               : `https://${domainWithoutDot}.${process.env.BASE_DOMAIN}${url.pathname}${search}${joiner}track=${trackCode}`;
 
           return {
-               trackCode: trackCode,
-               subdomainUrl: subdomainUrl
+               trackCode,
+               subdomainUrl
           };
      }
+
+     private async extractMainDomain(domain: string): Promise<string> {
+          try {
+          const normalized = domain.startsWith("http://") || domain.startsWith("https://")
+               ? domain
+               : `https://${domain}`;
+
+          const parsedUrl = new URL(normalized);
+          const hostname = parsedUrl.hostname.replace(/^www\./, "");
+
+          const parts = hostname.split(".");
+          const tld = parts[parts.length - 1];
+          const secondLevel = parts[parts.length - 2];
+
+          const commonTLDs = ["com", "net", "org", "app", "gov", "edu", "io", "dev", "co"];
+
+          if (commonTLDs.includes(tld)) {
+               return secondLevel;
+          }
+
+          return `${secondLevel}${tld}`;
+          } catch {
+               return "";
+          }
+     }
+
 
      private async save(newUrl: string, oldUrl: string, track: string, userId: number, alias: string): Promise<any> {
           const dataToCreate = {

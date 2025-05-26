@@ -6,6 +6,7 @@ import { CreateLinkService } from "../../../services/link/create-link.service";
 import { LinkDetailsSerializer } from "../response/url/url-details.response";
 import { validateDto } from "../../../middlewares/validateDto";
 import { CreateUrlDTO } from "../dtos/url/create-url.dto";
+import { FetchTrackDTO } from "../dtos/url/fetch-track.dto";
 
 
 export async function track(req: Request, res: Response) {
@@ -59,7 +60,7 @@ export async function details(req: Request, res: Response) {
 };
 
 export default {
-     track,
+     track: [validateDto(FetchTrackDTO), track],
      create: [validateDto(CreateUrlDTO), create],
      list,
      details,
