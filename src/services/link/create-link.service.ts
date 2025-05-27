@@ -46,7 +46,7 @@ export class CreateLinkService {
           const hasSearchParams  = url.searchParams.toString().length > 0;
           const search           = hasSearchParams ? `?${url.searchParams.toString()}` : '';
           const joiner           = hasSearchParams ? '&' : '?';
-          const isDev            = process.env.enviroment === 'development';
+          const isDev            = process.env.ENVIROMENT === 'development';
 
           const subdomainUrl     = isDev
                ? `${domainWithoutDot}.${process.env.BASE_DOMAIN}${search}${joiner}track=${trackCode}:5173`
