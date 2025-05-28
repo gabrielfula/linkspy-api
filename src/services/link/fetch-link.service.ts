@@ -6,6 +6,7 @@ import { LinkRepository } from "../../repositories/link.repository";
 import { WebSocketService } from "../../socket/web";
 import { CreateLocationService } from "../location/create-location.service";
 import { LinkEntity } from "../../entities/link.entity";
+import { LocationSerializer } from "../../http/admin/response/location/location.response";
 
 export class FetchLinkService {
     private linkRepository: LinkRepository;
@@ -57,7 +58,7 @@ export class FetchLinkService {
 
             WebSocketService.emit(`location-update`, {
                 uuid: link.uuid,
-                url:  LinkSerializer.serialize(link)
+                location:  LocationSerializer.serialize(location)
             });
 
             return {
